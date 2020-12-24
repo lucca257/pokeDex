@@ -32,28 +32,27 @@ export default {
     async getPokemon(){
       await api.get(`/pokemon/${this.search}`)
       .then(response => {
-        // handle success
         const {name, sprites} = response.data
-        console.log(name, sprites)
+        this.triggerPositive ()
         this.name = name
         this.url = sprites.other.dream_world.front_default
       })
       .catch(error => {
-        // handle error
-        console.log(error);
+        this.triggerNegative ()
       })
     },
+
     triggerPositive () {
       this.$q.notify({
         type: 'positive',
-        message: `This is a "positive" type notification.`
+        message: `Pokemon encontrado`
       })
     },
 
     triggerNegative () {
       this.$q.notify({
         type: 'negative',
-        message: `This is a "negative" type notification.`
+        message: `Oops, ocorreu um erro. Tente novamente!`
       })
     },
   }
