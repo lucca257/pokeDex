@@ -42,7 +42,20 @@ export default {
         // handle error
         console.log(error);
       })
-    }
+    },
+    triggerPositive () {
+      this.$q.notify({
+        type: 'positive',
+        message: `This is a "positive" type notification.`
+      })
+    },
+
+    triggerNegative () {
+      this.$q.notify({
+        type: 'negative',
+        message: `This is a "negative" type notification.`
+      })
+    },
   }
 }
 </script>
