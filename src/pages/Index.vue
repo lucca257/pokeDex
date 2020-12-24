@@ -46,7 +46,7 @@ export default {
     return {
       name: '',
       url: '',
-      id: 0,
+      id: null,
       search: ''
     }
   },
@@ -57,6 +57,7 @@ export default {
 
   methods: {
     async getPokemon(id){
+      if(id == 0) return
       const search = id ? id : this.search
       await api.get(`/pokemon/${search}`)
       .then(response => {
@@ -76,6 +77,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         position: 'top',
+        delay: 3000,
         message: `Pokemon encontrado`
       })
     },
