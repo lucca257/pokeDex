@@ -1,38 +1,16 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="column items-center">
-      <h2>{{name}}</h2>
-      <q-img :src="url" width="250px"/>
-    </div>
-    <div class="row justify-around full-width">
-      <div class="row">
-        <q-input filled v-model="search" label="Encontre o seu pokemon" />
-      <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />
-      </div>
-    </div>
-    <div class="row justify-between absolute full-width container-arrows">
-      <q-icon
-        name="far fa-arrow-alt-circle-left"
-        color="purple"
-        class="q-ml-sm cursor-pointer"
-        size="50px"
-        @click="getPokemon(id - 1)"
-      >
-        <q-tooltip>
-          anterior
-        </q-tooltip>
-      </q-icon>
-      <q-icon
-        name="far fa-arrow-alt-circle-right"
-        color="purple"
-        class="q-ml-sm cursor-pointer"
-        size="50px"
-        @click="getPokemon(id + 1)"
-      >
-        <q-tooltip>
-          próximo
-        </q-tooltip>
-      </q-icon>
+    <div class="q-pa-md row items-start q-gutter-md">
+      <q-card class="my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
+      <q-card-section>
+        <div class="text-h6">{{pokemon.name}}</div>
+        <div class="text-subtitle2">Imagem do pokemon</div>
+      </q-card-section>
+      <q-card-actions>
+        <q-btn flat>Action 1</q-btn>
+        <q-btn flat>Action 2</q-btn>
+      </q-card-actions>
+    </q-card>
     </div>
   </q-page>
 </template>
@@ -47,29 +25,43 @@ export default {
       name: '',
       url: '',
       id: null,
-      search: ''
+      search: '',
+      pokemons: []
     }
   },
 
   async beforeMount(){
-    await this.getPokemon(1)
+    await this.listPokemons()
+    //await this.getPokemon(1)
   },
 
   methods: {
-    async getPokemon(id){
-      if(id == 0) return
-      const search = id ? id : this.search
-      await api.get(`/pokemon/${search}`)
+    async listPokemons(){
+      await api.get(`/pokemon?offset=0&limit=50`)
       .then(response => {
-        const {name, sprites, id} = response.data
-        this.triggerPositive ()
-        this.name = name
-        this.url = sprites.other.dream_world.front_default
-        this.id = id
-        this.search = ""
+        const pokemons = response.data.results
+        pokemons.map(async (pokemon) => {
+          await this.getPokemon(pokemon.name)
+        })
       })
       .catch(error => {
         this.triggerNegative ()
+      })
+      console.log(this.pokemons)
+    },
+    async getPokemon(search){
+      await api.get(`/pokemon/${search}`)
+      .then(response => {
+        const {name, sprites, id} = response.data
+        const info = {
+          name: name,
+          id: id,
+          url: sprites.other.dream_world.front_default
+        }
+        this.pokemons.push(info)
+      })
+      .catch(error => {
+        //this.triggerNegative ()
       })
     },
 
