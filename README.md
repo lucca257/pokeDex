@@ -1,6 +1,6 @@
-# Quasar App (poke-dex)
+# Pokedex
 
-A Quasar Framework app
+List of all pokemons, using vuejs and framework quasar
 
 ## Install the dependencies
 ```bash
