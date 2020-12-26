@@ -4,7 +4,7 @@
       <q-card class="my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
       <q-card-section>
         <div class="text-h6">{{pokemon.name}}</div>
-        <div class="text-subtitle2">Imagem do pokemon</div>
+        <q-img :src="pokemon.url" :ratio="1" width="40px"/>
       </q-card-section>
       <q-card-actions>
         <q-btn flat>Action 1</q-btn>
@@ -60,8 +60,9 @@ export default {
         }
         this.pokemons.push(info)
       })
+      //this.pokemons.sort()
       .catch(error => {
-        //this.triggerNegative ()
+        this.triggerNegative ()
       })
     },
 
