@@ -20,7 +20,7 @@
         </q-btn>
       </q-card-actions>
     </q-card>
-      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading && pokemons.length !== 1"/>
+      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading"/>
     </div>
   </q-page>
 </template>
@@ -141,7 +141,7 @@ export default {
         this.$q.loading.hide()
         this.timer = void 0
         this.loading = false
-      }, 2000)
+      }, 3000)
     },
     async listPokemons(){
       this.showLoading()
@@ -183,6 +183,9 @@ export default {
       this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
     },
     async morePokemons(){
+      if(this.pokemons.length === 1){
+        this.pokemons = []
+      }
       this.offset += 20
       this.limit += {...this.offset} - 20
       await this.listPokemons()
@@ -190,6 +193,8 @@ export default {
     async searchPokemon(){
       this.pokemons = []
       await this.getPokemon(this.search)
+      this.offset += 0
+      this.limit += 20
     },
     triggerPositive () {
       this.$q.notify({
