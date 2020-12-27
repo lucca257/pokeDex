@@ -113,17 +113,35 @@ export default {
         },
       ],
       offset:0,
-      limit:50
+      limit:20,
+      loading: false
     }
   },
 
   async beforeMount(){
     await this.listPokemons()
-    //await this.getPokemon(1)
   },
-
+  beforeDestroy () {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer)
+      this.$q.loading.hide()
+    }
+  },
   methods: {
+    showLoading () {
+      this.loading = true
+      this.$q.loading.show({
+        message: '<b>processando</b> dados dos pokemons.<br/><span class="text-primary">Aguarde...</span>'
+      })
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 5000)
+      this.loading = false
+    },
     async listPokemons(){
+      this.showLoading()
       await api.get(`/pokemon?offset=${this.offset}&limit=${this.limit}`)
       .then(response => {
         const pokemons = response.data.results
