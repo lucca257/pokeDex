@@ -147,7 +147,7 @@ export default {
         }
         this.pokemons.push(info)
       })
-      //this.pokemons.sort()
+       this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
       .catch(error => {
         console.log(error)
         this.triggerNegative ()
