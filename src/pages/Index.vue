@@ -1,11 +1,14 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="row q-pa-sm" v-if="!loading">
-      <q-input filled v-model="search" label="Encontre o seu pokemon" />
-      <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />
+    <div class="row justify-around full-width">
+      <div class="row q-pa-sm" v-if="!loading">
+        <q-input filled v-model="search" label="Encontre o seu pokemon" />
+        <q-btn color="purple" label="Pesquisar" @click="searchPokemon" />
+      </div>
     </div>
+
     <div class="q-pa-md row items-start q-gutter-md justify-center">
-      <q-card class="col-11 col-md-2 my-card bg-grey-1" v-for="(pokemon, pk) in pokemons" :key="pk">
+      <q-card v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 my-card bg-grey-1'" v-for="(pokemon, pk) in pokemons" :key="pk">
         <q-card-section vertical align="center">
           <q-img :src="pokemon.url" :ratio="1" width="110px"/>
           <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
@@ -17,7 +20,7 @@
         </q-btn>
       </q-card-actions>
     </q-card>
-      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading"/>
+      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading && pokemons.length !== 1"/>
     </div>
   </q-page>
 </template>
@@ -184,7 +187,10 @@ export default {
       this.limit += {...this.offset} - 20
       await this.listPokemons()
     },
-
+    async searchPokemon(){
+      this.pokemons = []
+      await this.getPokemon(this.search)
+    },
     triggerPositive () {
       this.$q.notify({
         type: 'positive',
