@@ -1,13 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md row items-start q-gutter-md justify-center">
-      <q-card class="col-11 col-md-2 my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
+      <q-card class="col-11 col-md-2 my-card bg-grey-1" v-for="(pokemon, pk) in pokemons" :key="pk">
       <q-card-section vertical align="center">
-        <div class="text-h6">{{pokemon.name}}</div>
-        <q-img :src="pokemon.url" :ratio="1" width="40px"/>
+        <div class="text-h6">{{pokemon.name}}</div><br>
+        <q-img :src="pokemon.url" :ratio="1" width="110px"/>
       </q-card-section>
       <q-card-actions align="around">
-      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat>
+      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat style="color: #FF0080">
         {{type}}
       </q-btn>
       </q-card-actions>
@@ -27,7 +27,85 @@ export default {
       url: '',
       id: null,
       search: '',
-      pokemons: []
+      pokemons: [],
+      typesInfo: [
+        {
+          type: 'grass',
+          color: '#78c850'
+        },
+        {
+          type: 'fire',
+          color: '#f08030'
+        },
+        {
+          type: 'water',
+          color: '#6890f0'
+        },
+        {
+          type: 'bug',
+          color: '#b9c64d'
+        },
+        {
+          type: 'normal',
+          color: '#b9b993'
+        },
+        {
+          type: 'position',
+          color: '#b9b993'
+        },
+        {
+          type: 'flying',
+          color: '#b9a6f3'
+        },
+        {
+          type: 'eletric',
+          color: '#f9d959'
+        },
+        {
+          type: 'ground',
+          color: '#e6cd86'
+        },
+        {
+          type: 'eletric',
+          color: '#f9d959'
+        },
+        {
+          type: 'fairy',
+          color: '#f1adbd'
+        },
+        {
+          type: 'fighting',
+          color: '#cd4d60'
+        },
+        {
+          type: 'psychic',
+          color: '#f979a0'
+        },
+        {
+          type: 'rock',
+          color: '#c6b360'
+        },
+        {
+          type: 'steel',
+          color: '#c6c6d9'
+        },
+        {
+          type: 'ice',
+          color: '#ade0e0'
+        },
+        {
+          type: 'ghost',
+          color: '#8d79ad'
+        },
+        {
+          type: 'dark',
+          color: '#705848'
+        },
+        {
+          type: 'dragon',
+          color: '#7038f8'
+        },
+      ]
     }
   },
 
@@ -46,6 +124,7 @@ export default {
         })
       })
       .catch(error => {
+        console.error(error)
         this.triggerNegative ()
       })
       //console.log(this.pokemons)
@@ -57,7 +136,7 @@ export default {
         const info = {
           name: name,
           id: id,
-          url: sprites.other.dream_world.front_default,
+          url: sprites.front_default,
           types: types.map(type => {
             return type.type.name
           })
