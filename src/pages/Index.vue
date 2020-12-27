@@ -2,11 +2,11 @@
   <q-page class="flex flex-center">
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card class="col-11 col-md-2 my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
-      <q-card-section>
+      <q-card-section vertical align="center">
         <div class="text-h6">{{pokemon.name}}</div>
         <q-img :src="pokemon.url" :ratio="1" width="40px"/>
       </q-card-section>
-      <q-card-actions>
+      <q-card-actions align="around">
       <q-btn v-for="(type,t) in pokemon.types" :key="t" flat>
         {{type}}
       </q-btn>
