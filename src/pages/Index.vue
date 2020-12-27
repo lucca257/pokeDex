@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="row justify-around full-width">
-      <div class="row q-pa-sm" v-if="!loading">
+      <div class="row q-pa-lg" v-if="!loading">
         <q-input filled v-model="search" label="Encontre o seu pokemon" />
         <q-btn color="purple" label="Pesquisar" @click="searchPokemon" />
       </div>
@@ -14,13 +14,17 @@
           <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
           <div class="text-h6">{{pokemon.name}}</div><br>
         </q-card-section>
-      <q-card-actions align="around">
-        <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
-          {{type.name}}
-        </q-btn>
-      </q-card-actions>
-    </q-card>
-      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading"/>
+        <q-card-actions align="around">
+          <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
+            {{type.name}}
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </div>
+    <div class="row justify-around full-width">
+      <div class="row q-pa-lg" v-if="!loading">
+        <q-btn color="purple" label="carregar mais pokemóns" @click="morePokemons()"/>
+      </div>
     </div>
   </q-page>
 </template>
