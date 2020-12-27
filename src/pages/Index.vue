@@ -6,15 +6,15 @@
     </div>
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card class="col-11 col-md-2 my-card bg-grey-1" v-for="(pokemon, pk) in pokemons" :key="pk">
-      <q-card-section vertical align="center">
-        <div class="text-subtitle2 float-left">{{pokemon.id}}</div>
-        <div class="text-h6">{{pokemon.name}}</div><br>
-        <q-img :src="pokemon.url" :ratio="1" width="110px"/>
-      </q-card-section>
+        <q-card-section vertical align="center">
+          <q-img :src="pokemon.url" :ratio="1" width="110px"/>
+          <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
+          <div class="text-h6">{{pokemon.name}}</div><br>
+        </q-card-section>
       <q-card-actions align="around">
-      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
-        {{type.name}}
-      </q-btn>
+        <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
+          {{type.name}}
+        </q-btn>
       </q-card-actions>
     </q-card>
       <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading"/>
@@ -137,8 +137,8 @@ export default {
       this.timer = setTimeout(() => {
         this.$q.loading.hide()
         this.timer = void 0
-      }, 5000)
-      this.loading = false
+        this.loading = false
+      }, 2000)
     },
     async listPokemons(){
       this.showLoading()
@@ -173,11 +173,11 @@ export default {
         }
         this.pokemons.push(info)
       })
-       this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
       .catch(error => {
         console.log(error)
         this.triggerNegative ()
       })
+      this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
     },
     async morePokemons(){
       this.offset += 20
