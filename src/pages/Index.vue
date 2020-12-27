@@ -3,6 +3,7 @@
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card class="col-11 col-md-2 my-card bg-grey-1" v-for="(pokemon, pk) in pokemons" :key="pk">
       <q-card-section vertical align="center">
+        <div class="text-subtitle2 float-left">{{pokemon.id}}</div>
         <div class="text-h6">{{pokemon.name}}</div><br>
         <q-img :src="pokemon.url" :ratio="1" width="110px"/>
       </q-card-section>
