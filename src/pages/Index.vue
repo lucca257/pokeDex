@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="row q-pa-sm">
+    <div class="row q-pa-sm" v-if="!loading">
       <q-input filled v-model="search" label="Encontre o seu pokemon" />
       <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />
     </div>
@@ -17,7 +17,7 @@
       </q-btn>
       </q-card-actions>
     </q-card>
-      <q-btn class="q-mr" color="purple" label="carregar mais pokemons" @click="morePokemons()" />
+      <q-btn class="q-mr" color="purple" label="carregar mais pokemóns" @click="morePokemons()" v-if="!loading"/>
     </div>
   </q-page>
 </template>
@@ -180,8 +180,8 @@ export default {
       })
     },
     async morePokemons(){
-      this.offset += {...this.limit}
-      this.limit += 50
+      this.offset += 20
+      this.limit += {...this.offset} - 20
       await this.listPokemons()
     },
 
