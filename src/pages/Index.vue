@@ -1,5 +1,9 @@
 <template>
   <q-page class="flex flex-center">
+    <div class="row q-pa-sm">
+      <q-input filled v-model="search" label="Encontre o seu pokemon" />
+      <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />
+    </div>
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card class="col-11 col-md-2 my-card bg-grey-1" v-for="(pokemon, pk) in pokemons" :key="pk">
       <q-card-section vertical align="center">
@@ -13,6 +17,7 @@
       </q-btn>
       </q-card-actions>
     </q-card>
+      <q-btn class="q-mr" color="purple" label="carregar mais pokemons" @click="morePokemons()" />
     </div>
   </q-page>
 </template>
@@ -106,7 +111,9 @@ export default {
           type: 'dragon',
           color: '#7038f8'
         },
-      ]
+      ],
+      offset:0,
+      limit:50
     }
   },
 
@@ -117,7 +124,7 @@ export default {
 
   methods: {
     async listPokemons(){
-      await api.get(`/pokemon?offset=0&limit=50`)
+      await api.get(`/pokemon?offset=${this.offset}&limit=${this.limit}`)
       .then(response => {
         const pokemons = response.data.results
         pokemons.map(async (pokemon) => {
@@ -153,6 +160,11 @@ export default {
         console.log(error)
         this.triggerNegative ()
       })
+    },
+    async morePokemons(){
+      this.offset += {...this.limit}
+      this.limit += 50
+      await this.listPokemons()
     },
 
     triggerPositive () {
