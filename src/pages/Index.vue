@@ -160,7 +160,6 @@ export default {
         console.error(error)
         this.triggerNegative ()
       })
-      //console.log(this.pokemons)
     },
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
@@ -197,8 +196,6 @@ export default {
     async searchPokemon(){
       this.pokemons = []
       await this.getPokemon(this.search)
-      this.offset += 0
-      this.limit += 20
     },
     triggerPositive () {
       this.$q.notify({
