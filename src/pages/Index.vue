@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page>
     <div class="row justify-around full-width">
       <div class="row q-pa-sm" v-if="!loading">
         <q-input filled v-model="search" label="Encontre o seu pokemon" />
@@ -8,7 +8,7 @@
     </div>
 
     <div class="q-pa-md row items-start q-gutter-md justify-center">
-      <q-card v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 my-card bg-grey-1'" v-for="(pokemon, pk) in pokemons" :key="pk">
+      <q-card v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 col-md-4 my-card bg-grey-1'" v-for="(pokemon, pk) in pokemons" :key="pk">
         <q-card-section vertical align="center">
           <q-img :src="pokemon.url" :ratio="1" width="110px"/>
           <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
