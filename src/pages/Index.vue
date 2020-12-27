@@ -7,8 +7,8 @@
         <q-img :src="pokemon.url" :ratio="1" width="110px"/>
       </q-card-section>
       <q-card-actions align="around">
-      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat style="color: #FF0080">
-        {{type}}
+      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
+        {{type.name}}
       </q-btn>
       </q-card-actions>
     </q-card>
@@ -50,15 +50,15 @@ export default {
           color: '#b9b993'
         },
         {
-          type: 'position',
-          color: '#b9b993'
+          type: 'poison',
+          color: '#a040a0'
         },
         {
           type: 'flying',
           color: '#b9a6f3'
         },
         {
-          type: 'eletric',
+          type: 'electric',
           color: '#f9d959'
         },
         {
@@ -138,7 +138,11 @@ export default {
           id: id,
           url: sprites.front_default,
           types: types.map(type => {
-            return type.type.name
+            const info = this.typesInfo.find(t => t.type === type.type.name)
+            return {
+              name: type.type.name,
+              color: info.color
+            }
           })
         }
         this.pokemons.push(info)
