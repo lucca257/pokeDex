@@ -1,14 +1,15 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="q-pa-md row items-start q-gutter-md">
-      <q-card class="my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
+    <div class="q-pa-md row items-start q-gutter-md justify-center">
+      <q-card class="col-11 col-md-2 my-card bg-purple text-white" v-for="(pokemon, pk) in pokemons" :key="pk">
       <q-card-section>
         <div class="text-h6">{{pokemon.name}}</div>
         <q-img :src="pokemon.url" :ratio="1" width="40px"/>
       </q-card-section>
       <q-card-actions>
-        <q-btn flat>Action 1</q-btn>
-        <q-btn flat>Action 2</q-btn>
+      <q-btn v-for="(type,t) in pokemon.types" :key="t" flat>
+        {{type}}
+      </q-btn>
       </q-card-actions>
     </q-card>
     </div>
@@ -47,21 +48,25 @@ export default {
       .catch(error => {
         this.triggerNegative ()
       })
-      console.log(this.pokemons)
+      //console.log(this.pokemons)
     },
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
       .then(response => {
-        const {name, sprites, id} = response.data
+        const {name, sprites, id, types} = response.data
         const info = {
           name: name,
           id: id,
-          url: sprites.other.dream_world.front_default
+          url: sprites.other.dream_world.front_default,
+          types: types.map(type => {
+            return type.type.name
+          })
         }
         this.pokemons.push(info)
       })
       //this.pokemons.sort()
       .catch(error => {
+        console.log(error)
         this.triggerNegative ()
       })
     },
