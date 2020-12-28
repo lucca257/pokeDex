@@ -33,7 +33,7 @@
   <q-page class="flex flex-center" v-else>
     <div class="column items-center">
       <h4>{{details.name}} nº{{details.id}}</h4>
-      <q-img :src="details.url2" width="250px"/>
+      <q-img :src="details.url2" />
     </div>
     <div class="q-pa-md">
       <div class="q-gutter-y-md">
@@ -71,10 +71,15 @@
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
-              <div class="text-h6">Alarms</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <div class="q-mt-xs" v-for="(stats, st) in details.stats" :key="st">
+                  <strong>{{stats.stat.name}}</strong>
+                  <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">
+                    <div class="absolute-full flex">
+                      <q-badge text-color="white" color="secondary" :label="stats.base_stat" />
+                    </div>
+                  </q-linear-progress>
+                </div>
             </q-tab-panel>
-
             <q-tab-panel name="movies">
               <div class="text-h6">Movies</div>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -225,6 +230,9 @@ export default {
     }
   },
   methods: {
+    totalStats(baseStatus){
+      return baseStatus * 2 + 5
+    },
     async viewDetails (pokemon) {
       await api.get(`/pokemon-species/${pokemon.id}`)
         .then(async (response)=> {
@@ -280,7 +288,7 @@ export default {
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
       .then(response => {
-        const {name, sprites, id, types, height, weight, abilities} = response.data
+        const {name, sprites, id, types, height, weight, abilities, stats} = response.data
         const info = {
           name: name,
           id: id,
@@ -289,6 +297,7 @@ export default {
           height: height,
           weight: weight,
           abilities: abilities,
+          stats: stats,
           types: types.map(type => {
             const info = this.typesInfo.find(t => t.type === type.type.name)
             return {
@@ -337,8 +346,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.container-arrows {
-
-}
-</style>
