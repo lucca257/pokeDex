@@ -6,9 +6,12 @@
         <q-btn color="purple" label="Pesquisar" @click="searchPokemon" />
       </div>
     </div>
-
     <div class="q-pa-md row items-start q-gutter-md justify-center">
-      <q-card v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 col-md-4 my-card bg-grey-1'" v-for="(pokemon, pk) in pokemons" :key="pk">
+      <q-card
+        v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 col-md-4 my-card bg-grey-1'"
+        v-for="(pokemon, pk) in pokemons"
+        :key="pk"
+        @click="viewDetails(pokemon)">
         <q-card-section vertical align="center">
           <q-img :src="pokemon.url" :ratio="1" width="110px"/>
           <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
@@ -31,6 +34,7 @@
 
 <script>
 import api from '../services/api'
+import axios from 'axios'
 export default {
   name: 'PageIndex',
 
@@ -121,7 +125,8 @@ export default {
       ],
       offset:0,
       limit:20,
-      loading: false
+      loading: false,
+      details: {}
     }
   },
 
@@ -135,6 +140,30 @@ export default {
     }
   },
   methods: {
+    async viewDetails (pokemon) {
+      await api.get(`/pokemon-species/${pokemon.id}`)
+        .then(async (response)=> {
+          const {evolution_chain, flavor_text_entries} = response.data
+          await this.evolutions(evolution_chain.url)
+          this.details = {
+            description: flavor_text_entries[0].flavor_text
+          }
+        })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
+    },
+    async evolutions(evolution_url){
+      await axios.get(evolution_url)
+        .then(response => {
+          console.log(response.data.id)
+        })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
+    },
     showLoading () {
       this.loading = true
       this.$q.loading.show({
@@ -164,11 +193,14 @@ export default {
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
       .then(response => {
-        const {name, sprites, id, types} = response.data
+        const {name, sprites, id, types, height, weight, abilities} = response.data
         const info = {
           name: name,
           id: id,
           url: sprites.front_default,
+          height: height,
+          weight: weight,
+          abilities: abilities,
           types: types.map(type => {
             const info = this.typesInfo.find(t => t.type === type.type.name)
             return {
