@@ -51,13 +51,23 @@
             <q-tab name="alarms" label="Alarms" />
             <q-tab name="movies" label="Movies" />
           </q-tabs>
-
           <q-separator />
-
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="description">
               <div class="text-h6">Description</div>
               {{details.description}}
+              <div class="q-pa-md row items-start q-gutter-md justify-center">
+                <q-card class="my-card ">
+                  <q-card-section align="center">
+                    <q-btn flat>height {{details.height/100}} m</q-btn>
+                    <q-btn flat>weight {{details.weight/100}} kg</q-btn>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <div class="text-h6">Type</div>
+              <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >
+                {{type.name}}
+              </q-btn>
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
