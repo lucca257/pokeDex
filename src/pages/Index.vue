@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page v-if="!details">
     <div class="row justify-around full-width">
       <div class="row q-pa-lg" v-if="!loading">
         <q-input filled v-model="search" label="Encontre o seu pokemon" />
@@ -29,6 +29,80 @@
         <q-btn color="purple" label="carregar mais pokemóns" @click="morePokemons()"/>
       </div>
     </div>
+  </q-page>
+  <q-page class="flex flex-center" v-else>
+    <div class="column items-center">
+      <h4>{{details.name}} nº{{details.id}}</h4>
+      <q-img :src="details.url2" width="250px"/>
+    </div>
+    <div class="q-pa-md">
+      <div class="q-gutter-y-md">
+        <q-card>
+          <q-tabs
+            v-model="tab"
+            dense
+            class="text-grey"
+            active-color="primary"
+            indicator-color="primary"
+            align="justify"
+            narrow-indicator
+          >
+            <q-tab name="description" label="Description" />
+            <q-tab name="alarms" label="Alarms" />
+            <q-tab name="movies" label="Movies" />
+          </q-tabs>
+
+          <q-separator />
+
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="description">
+              <div class="text-h6">Description</div>
+              {{details.description}}
+            </q-tab-panel>
+
+            <q-tab-panel name="alarms">
+              <div class="text-h6">Alarms</div>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </q-tab-panel>
+
+            <q-tab-panel name="movies">
+              <div class="text-h6">Movies</div>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </q-tab-panel>
+          </q-tab-panels>
+        </q-card>
+      </div>
+    </div>
+<!--    <div class="row justify-around full-width">-->
+<!--      <div class="row">-->
+<!--        <q-input filled v-model="search" label="Encontre o seu pokemon" />-->
+<!--        <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row justify-between absolute full-width container-arrows">-->
+<!--      <q-icon-->
+<!--        name="far fa-arrow-alt-circle-left"-->
+<!--        color="purple"-->
+<!--        class="q-ml-sm cursor-pointer"-->
+<!--        size="50px"-->
+<!--        @click="getPokemon(id - 1)"-->
+<!--      >-->
+<!--        <q-tooltip>-->
+<!--          anterior-->
+<!--        </q-tooltip>-->
+<!--      </q-icon>-->
+<!--      <q-icon-->
+<!--        name="far fa-arrow-alt-circle-right"-->
+<!--        color="purple"-->
+<!--        class="q-ml-sm cursor-pointer"-->
+<!--        size="50px"-->
+<!--        @click="getPokemon(id + 1)"-->
+<!--      >-->
+<!--        <q-tooltip>-->
+<!--          próximo-->
+<!--        </q-tooltip>-->
+<!--      </q-icon>-->
+<!--    </div>-->
   </q-page>
 </template>
 
@@ -126,7 +200,8 @@ export default {
       offset:0,
       limit:20,
       loading: false,
-      details: {}
+      details: null,
+      tab: 'description'
     }
   },
 
@@ -146,8 +221,10 @@ export default {
           const {evolution_chain, flavor_text_entries} = response.data
           await this.evolutions(evolution_chain.url)
           this.details = {
-            description: flavor_text_entries[0].flavor_text
+            description: flavor_text_entries[0].flavor_text,
+            ...pokemon
           }
+          console.log(this.details)
         })
         .catch(error => {
           console.error(error)
@@ -198,6 +275,7 @@ export default {
           name: name,
           id: id,
           url: sprites.front_default,
+          url2: sprites.other.dream_world.front_default,
           height: height,
           weight: weight,
           abilities: abilities,
