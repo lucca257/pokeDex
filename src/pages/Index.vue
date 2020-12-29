@@ -235,9 +235,9 @@ export default {
       if(typeof(pokemon) !== "undefined"){
         return pokemon.url
       }
-      // await this.getPokemon(name)
-      // const {url} = this.pokemons.find(pokemon => pokemon.name === name)
-      // return url
+      await this.getPokemon(name)
+      const {url} = this.pokemons.find(pokemon => pokemon.name === name)
+      return url
     },
     async viewDetails (pokemon) {
       await api.get(`/pokemon-species/${pokemon.id}`)
