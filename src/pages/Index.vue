@@ -31,12 +31,12 @@
     </div>
   </q-page>
   <q-page class="flex flex-center" v-else>
-    <div class="column items-center">
+    <div class="column items-center col-12">
       <h4>{{details.name}} nº{{details.id}}</h4>
       <q-img :src="details.url2" />
     </div>
     <div class="q-pa-md">
-      <div class="q-gutter-y-md">
+      <div class="q-gutter-y-md col-12">
         <q-card>
           <q-tabs
             v-model="tab"
@@ -81,43 +81,19 @@
                 </div>
             </q-tab-panel>
             <q-tab-panel name="movies">
-              <div class="text-h6">Movies</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              <div class="row" v-for="(evolution, e) in details.evolution" :key="e">
+                <div class="">
+                  <q-img :src="evolution.url1" :ratio="1" width="140px"/>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <q-img :src="evolution.url2" :ratio="1" width="140px"/>
+                  <p style="text-align: center;"><b>{{evolution.name}}</b> evolves into <b>{{evolution.evolves}}</b> at level {{evolution.level}}</p>
+                </div>
+              </div>
             </q-tab-panel>
           </q-tab-panels>
         </q-card>
       </div>
     </div>
-<!--    <div class="row justify-around full-width">-->
-<!--      <div class="row">-->
-<!--        <q-input filled v-model="search" label="Encontre o seu pokemon" />-->
-<!--        <q-btn color="purple" label="Pesquisar" @click="getPokemon()" />-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="row justify-between absolute full-width container-arrows">-->
-<!--      <q-icon-->
-<!--        name="far fa-arrow-alt-circle-left"-->
-<!--        color="purple"-->
-<!--        class="q-ml-sm cursor-pointer"-->
-<!--        size="50px"-->
-<!--        @click="getPokemon(id - 1)"-->
-<!--      >-->
-<!--        <q-tooltip>-->
-<!--          anterior-->
-<!--        </q-tooltip>-->
-<!--      </q-icon>-->
-<!--      <q-icon-->
-<!--        name="far fa-arrow-alt-circle-right"-->
-<!--        color="purple"-->
-<!--        class="q-ml-sm cursor-pointer"-->
-<!--        size="50px"-->
-<!--        @click="getPokemon(id + 1)"-->
-<!--      >-->
-<!--        <q-tooltip>-->
-<!--          próximo-->
-<!--        </q-tooltip>-->
-<!--      </q-icon>-->
-<!--    </div>-->
   </q-page>
 </template>
 
@@ -263,7 +239,8 @@ export default {
               name: species.name,
               evolves: evolves_to[0].species.name,
               level: evolves_to[0].evolution_details[0].min_level,
-              url: await this.pokemonUrl(species.name)
+              url1: await this.pokemonUrl(species.name),
+              url2: await this.pokemonUrl(evolves_to[0].species.name)
             },
           ]
           if(typeof(evolves_to[0].evolves_to[0]) !== 'undefined'){
@@ -271,7 +248,8 @@ export default {
               name: evolves_to[0].species.name,
               evolves: evolves_to[0].evolves_to[0].species.name,
               level: evolves_to[0].evolves_to[0].evolution_details[0].min_level,
-              url: await this.pokemonUrl(evolves_to[0].species.name)
+              url1: await this.pokemonUrl(evolves_to[0].species.name),
+              url2: await this.pokemonUrl(evolves_to[0].evolves_to[0].species.name)
             })
           }
           this.details = {
