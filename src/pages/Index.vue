@@ -14,7 +14,7 @@
         @click="viewDetails(pokemon)">
         <q-card-section vertical align="center">
           <q-img :src="pokemon.url" :ratio="1" width="110px"/>
-          <div class="text-subtitle2" style="color: #919191">Nº{{pokemon.id}}</div>
+          <div><span class="pokemon-id" style="color: #919191">Nº {{pokemon.id}}</span></div>
           <div class="text-h6">{{pokemon.name}}</div><br>
         </q-card-section>
         <q-card-actions align="around">
@@ -31,69 +31,91 @@
     </div>
   </q-page>
   <q-page class="flex flex-center" v-else>
-    <div class="column items-center col-12">
-      <h4>{{details.name}} nº{{details.id}}</h4>
-      <q-img :src="details.url2" />
-    </div>
-    <div class="q-pa-md">
-      <div class="q-gutter-y-md col-12">
-        <q-card>
-          <q-tabs
-            v-model="tab"
-            dense
-            class="text-grey"
-            active-color="primary"
-            indicator-color="primary"
-            align="justify"
-            narrow-indicator
-          >
-            <q-tab name="description" label="Description" />
-            <q-tab name="alarms" label="Alarms" />
-            <q-tab name="movies" label="Movies" />
-          </q-tabs>
-          <q-separator />
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="description">
-              <div class="text-h6">Description</div>
-              {{details.description}}
-              <div class="q-pa-md row items-start q-gutter-md justify-center">
-                <q-card class="my-card ">
-                  <q-card-section align="center">
-                    <q-btn flat>height {{details.height/100}} m</q-btn>
-                    <q-btn flat>weight {{details.weight/100}} kg</q-btn>
-                  </q-card-section>
-                </q-card>
-              </div>
-              <div class="text-h6">Type</div>
-              <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >
-                {{type.name}}
-              </q-btn>
-            </q-tab-panel>
-
-            <q-tab-panel name="alarms">
-                <div class="q-mt-xs" v-for="(stats, st) in details.stats" :key="st">
-                  <strong>{{stats.stat.name}}</strong>
-                  <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">
-                    <div class="absolute-full flex">
-                      <q-badge text-color="white" color="secondary" :label="stats.base_stat" />
-                    </div>
-                  </q-linear-progress>
-                </div>
-            </q-tab-panel>
-            <q-tab-panel name="movies">
-              <div class="row" v-for="(evolution, e) in details.evolution" :key="e">
-                <div class="">
-                  <q-img :src="evolution.url1" :ratio="1" width="140px"/>
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                  <q-img :src="evolution.url2" :ratio="1" width="140px"/>
-                  <p style="text-align: center;"><b>{{evolution.name}}</b> evolves into <b>{{evolution.evolves}}</b> at level {{evolution.level}}</p>
-                </div>
-              </div>
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-card>
+    <div class="row top-content">
+      <div class="">
+        <q-img :src="details.url2" width="350px"/>
+      </div>
+      <div class="q-gutter-y-md column items-center">
+        <div class="text-h2">{{details.name}}</div>
+        <div class="">
+          <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >
+            {{type.name}}
+          </q-btn>
+        </div>
+        <p>{{details.description}}</p>
+        <div class="q-mt-xs" style="width: 300px;" v-for="(stats, st) in details.stats" :key="st">
+          <strong>{{stats.stat.name}}</strong>
+          <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">
+            <div class="absolute-full flex">
+              <q-badge text-color="white" color="secondary" :label="stats.base_stat" />
+            </div>
+          </q-linear-progress>
+        </div>
+        <div class="text-h5">Evolutions</div>
+        <div class="row">
+          <q-img :src="evolution.url" :ratio="1" width="140px" v-for="(evolution, e) in details.evolution" :key="e"/>
+        </div>
       </div>
     </div>
+<!--    <div class="q-pa-md">-->
+<!--      <div class="q-gutter-y-md col-12">-->
+<!--        <q-card>-->
+<!--          <q-tabs-->
+<!--            v-model="tab"-->
+<!--            dense-->
+<!--            class="text-grey"-->
+<!--            active-color="primary"-->
+<!--            indicator-color="primary"-->
+<!--            align="justify"-->
+<!--            narrow-indicator-->
+<!--          >-->
+<!--            <q-tab name="description" label="Description" />-->
+<!--            <q-tab name="alarms" label="Alarms" />-->
+<!--            <q-tab name="movies" label="Movies" />-->
+<!--          </q-tabs>-->
+<!--          <q-separator />-->
+<!--          <q-tab-panels v-model="tab" animated>-->
+<!--            <q-tab-panel name="description">-->
+<!--              <div class="text-h6">Description</div>-->
+<!--              {{details.description}}-->
+<!--              <div class="q-pa-md row items-start q-gutter-md justify-center">-->
+<!--                <q-card class="my-card ">-->
+<!--                  <q-card-section align="center">-->
+<!--                    <q-btn flat>height {{details.height/100}} m</q-btn>-->
+<!--                    <q-btn flat>weight {{details.weight/100}} kg</q-btn>-->
+<!--                  </q-card-section>-->
+<!--                </q-card>-->
+<!--              </div>-->
+<!--              <div class="text-h6">Type</div>-->
+<!--              <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >-->
+<!--                {{type.name}}-->
+<!--              </q-btn>-->
+<!--            </q-tab-panel>-->
+
+<!--            <q-tab-panel name="alarms">-->
+<!--                <div class="q-mt-xs" v-for="(stats, st) in details.stats" :key="st">-->
+<!--                  <strong>{{stats.stat.name}}</strong>-->
+<!--                  <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">-->
+<!--                    <div class="absolute-full flex">-->
+<!--                      <q-badge text-color="white" color="secondary" :label="stats.base_stat" />-->
+<!--                    </div>-->
+<!--                  </q-linear-progress>-->
+<!--                </div>-->
+<!--            </q-tab-panel>-->
+<!--            <q-tab-panel name="movies">-->
+<!--              <div class="row" v-for="(evolution, e) in details.evolution" :key="e">-->
+<!--                <div class="">-->
+<!--                  <q-img :src="evolution.url1" :ratio="1" width="140px"/>-->
+<!--                  <i class="fa fa-arrow-right" aria-hidden="true"></i>-->
+<!--                  <q-img :src="evolution.url2" :ratio="1" width="140px"/>-->
+<!--                  <p style="text-align: center;"><b>{{evolution.name}}</b> evolves into <b>{{evolution.evolves}}</b> at level {{evolution.level}}</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </q-tab-panel>-->
+<!--          </q-tab-panels>-->
+<!--        </q-card>-->
+<!--      </div>-->
+<!--    </div>-->
   </q-page>
 </template>
 
@@ -237,19 +259,17 @@ export default {
           const evolution = [
             {
               name: species.name,
-              evolves: evolves_to[0].species.name,
-              level: evolves_to[0].evolution_details[0].min_level,
-              url1: await this.pokemonUrl(species.name),
-              url2: await this.pokemonUrl(evolves_to[0].species.name)
+              url: await this.pokemonUrl(species.name),
+            },
+            {
+              name: evolves_to[0].species.name,
+              url: await this.pokemonUrl(evolves_to[0].species.name),
             },
           ]
           if(typeof(evolves_to[0].evolves_to[0]) !== 'undefined'){
             evolution.push({
-              name: evolves_to[0].species.name,
-              evolves: evolves_to[0].evolves_to[0].species.name,
-              level: evolves_to[0].evolves_to[0].evolution_details[0].min_level,
-              url1: await this.pokemonUrl(evolves_to[0].species.name),
-              url2: await this.pokemonUrl(evolves_to[0].evolves_to[0].species.name)
+              name: evolves_to[0].evolves_to[0].species.name,
+              url: await this.pokemonUrl(evolves_to[0].evolves_to[0].species.name),
             })
           }
           this.details = {
@@ -349,3 +369,11 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.pokemon-id {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 0.8em;
+  padding: 5px 10px;
+}
+</style>
