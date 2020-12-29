@@ -237,12 +237,11 @@ export default {
       await api.get(`/pokemon-species/${pokemon.id}`)
         .then(async (response)=> {
           const {evolution_chain, flavor_text_entries} = response.data
-          await this.evolutions(evolution_chain.url)
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon
           }
-          console.log(this.details)
+          await this.evolutions(evolution_chain.url)
         })
         .catch(error => {
           console.error(error)
@@ -252,7 +251,27 @@ export default {
     async evolutions(evolution_url){
       await axios.get(evolution_url)
         .then(response => {
-          console.log(response.data.id)
+          const {species, evolves_to} = response.data.chain
+
+          const evolution = [
+            {
+              name: species.name,
+              evolves: evolves_to[0].species.name,
+              level: evolves_to[0].evolution_details[0].min_level
+            },
+          ]
+          if(typeof(evolves_to[0].evolves_to[0]) !== 'undefined'){
+            evolution.push({
+              name: evolves_to[0].species.name,
+              evolves: evolves_to[0].evolves_to[0].species.name,
+              level: evolves_to[0].evolves_to[0].evolution_details[0].min_level
+            })
+          }
+          this.details = {
+            ...this.details,
+            evolution: evolution
+          }
+          console.log(this.details.evolution)
         })
         .catch(error => {
           console.error(error)
