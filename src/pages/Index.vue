@@ -230,8 +230,14 @@ export default {
     }
   },
   methods: {
-    totalStats(baseStatus){
-      return baseStatus * 2 + 5
+    async pokemonUrl(name) {
+      const pokemon = this.pokemons.find(pokemon => pokemon.name === name)
+      if(typeof(pokemon) !== "undefined"){
+        return pokemon.url
+      }
+      // await this.getPokemon(name)
+      // const {url} = this.pokemons.find(pokemon => pokemon.name === name)
+      // return url
     },
     async viewDetails (pokemon) {
       await api.get(`/pokemon-species/${pokemon.id}`)
@@ -250,21 +256,22 @@ export default {
     },
     async evolutions(evolution_url){
       await axios.get(evolution_url)
-        .then(response => {
+        .then(async response => {
           const {species, evolves_to} = response.data.chain
-
           const evolution = [
             {
               name: species.name,
               evolves: evolves_to[0].species.name,
-              level: evolves_to[0].evolution_details[0].min_level
+              level: evolves_to[0].evolution_details[0].min_level,
+              url: await this.pokemonUrl(species.name)
             },
           ]
           if(typeof(evolves_to[0].evolves_to[0]) !== 'undefined'){
             evolution.push({
               name: evolves_to[0].species.name,
               evolves: evolves_to[0].evolves_to[0].species.name,
-              level: evolves_to[0].evolves_to[0].evolution_details[0].min_level
+              level: evolves_to[0].evolves_to[0].evolution_details[0].min_level,
+              url: await this.pokemonUrl(evolves_to[0].species.name)
             })
           }
           this.details = {
@@ -277,18 +284,6 @@ export default {
           console.error(error)
           this.triggerNegative ()
         })
-    },
-    showLoading () {
-      this.loading = true
-      this.$q.loading.show({
-        message: '<b>processando</b> dados dos pokemons.<br/><span class="text-primary">Aguarde...</span>'
-      })
-      // hiding in 3s
-      this.timer = setTimeout(() => {
-        this.$q.loading.hide()
-        this.timer = void 0
-        this.loading = false
-      }, 3000)
     },
     async listPokemons(){
       this.showLoading()
@@ -345,6 +340,18 @@ export default {
       this.pokemons = []
       await this.getPokemon(this.search)
     },
+    showLoading () {
+      this.loading = true
+      this.$q.loading.show({
+        message: '<b>processando</b> dados dos pokemons.<br/><span class="text-primary">Aguarde...</span>'
+      })
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+        this.loading = false
+      }, 3000)
+    },
     triggerPositive () {
       this.$q.notify({
         type: 'positive',
@@ -353,7 +360,6 @@ export default {
         message: `Pokemon encontrado`
       })
     },
-
     triggerNegative () {
       this.$q.notify({
         type: 'negative',
