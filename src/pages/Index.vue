@@ -14,7 +14,7 @@
         :key="pk"
         @click="viewDetails(pokemon)">
         <q-card-section vertical align="center">
-          <q-img :src="pokemon.url" :ratio="1" width="110px"/>
+          <q-img :src="pokemon.url" :ratio="1" width="180px"/>
           <div><span class="pokemon-id" style="color: #919191">Nº {{pokemon.id}}</span></div>
           <div class="text-h6">{{pokemon.name}}</div><br>
         </q-card-section>
@@ -31,12 +31,11 @@
       </div>
     </div>
   </q-page>
-  <q-page class="flex flex-center" v-else>
-    <div class="row top-content">
-      <div class="">
-        <q-img :src="details.url2" width="350px"/>
-      </div>
-      <div class="q-gutter-y-md column items-center">
+  <q-page class="flex" v-else>
+    <div class="row gutter items-center">
+      <div class="col-12 col-md-2"></div>
+      <div class="col-12 col-md-4"><q-img :src="details.url2" width="350px"/></div>
+      <div class="col-12 col-md-6 flex-center">
         <div class="text-h2">{{details.name}}</div>
         <div class="">
           <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >
@@ -52,71 +51,17 @@
             </div>
           </q-linear-progress>
         </div>
+      </div>
+      <div class="col-12 col-md-6">
+
+      </div>
+      <div class="col-12 col-md-6">
         <div class="text-h5">Evolutions</div>
         <div class="row">
           <q-img :src="evolution.url" :ratio="1" width="140px" v-for="(evolution, e) in details.evolution" :key="e"/>
         </div>
       </div>
     </div>
-<!--    <div class="q-pa-md">-->
-<!--      <div class="q-gutter-y-md col-12">-->
-<!--        <q-card>-->
-<!--          <q-tabs-->
-<!--            v-model="tab"-->
-<!--            dense-->
-<!--            class="text-grey"-->
-<!--            active-color="primary"-->
-<!--            indicator-color="primary"-->
-<!--            align="justify"-->
-<!--            narrow-indicator-->
-<!--          >-->
-<!--            <q-tab name="description" label="Description" />-->
-<!--            <q-tab name="alarms" label="Alarms" />-->
-<!--            <q-tab name="movies" label="Movies" />-->
-<!--          </q-tabs>-->
-<!--          <q-separator />-->
-<!--          <q-tab-panels v-model="tab" animated>-->
-<!--            <q-tab-panel name="description">-->
-<!--              <div class="text-h6">Description</div>-->
-<!--              {{details.description}}-->
-<!--              <div class="q-pa-md row items-start q-gutter-md justify-center">-->
-<!--                <q-card class="my-card ">-->
-<!--                  <q-card-section align="center">-->
-<!--                    <q-btn flat>height {{details.height/100}} m</q-btn>-->
-<!--                    <q-btn flat>weight {{details.weight/100}} kg</q-btn>-->
-<!--                  </q-card-section>-->
-<!--                </q-card>-->
-<!--              </div>-->
-<!--              <div class="text-h6">Type</div>-->
-<!--              <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >-->
-<!--                {{type.name}}-->
-<!--              </q-btn>-->
-<!--            </q-tab-panel>-->
-
-<!--            <q-tab-panel name="alarms">-->
-<!--                <div class="q-mt-xs" v-for="(stats, st) in details.stats" :key="st">-->
-<!--                  <strong>{{stats.stat.name}}</strong>-->
-<!--                  <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">-->
-<!--                    <div class="absolute-full flex">-->
-<!--                      <q-badge text-color="white" color="secondary" :label="stats.base_stat" />-->
-<!--                    </div>-->
-<!--                  </q-linear-progress>-->
-<!--                </div>-->
-<!--            </q-tab-panel>-->
-<!--            <q-tab-panel name="movies">-->
-<!--              <div class="row" v-for="(evolution, e) in details.evolution" :key="e">-->
-<!--                <div class="">-->
-<!--                  <q-img :src="evolution.url1" :ratio="1" width="140px"/>-->
-<!--                  <i class="fa fa-arrow-right" aria-hidden="true"></i>-->
-<!--                  <q-img :src="evolution.url2" :ratio="1" width="140px"/>-->
-<!--                  <p style="text-align: center;"><b>{{evolution.name}}</b> evolves into <b>{{evolution.evolves}}</b> at level {{evolution.level}}</p>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </q-tab-panel>-->
-<!--          </q-tab-panels>-->
-<!--        </q-card>-->
-<!--      </div>-->
-<!--    </div>-->
   </q-page>
 </template>
 
