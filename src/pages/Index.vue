@@ -2,8 +2,8 @@
   <q-page v-if="!details">
     <div class="row justify-around full-width">
       <div class="row q-pa-lg" v-if="!loading">
-        <q-input filled v-model="search" label="Encontre o seu pokemon" />
-        <q-btn color="purple" label="Pesquisar" @click="searchPokemon" />
+        <q-input filled v-model="search" label="Find your pokemon" />
+        <q-btn color="purple" label="Search" @click="searchPokemon" />
       </div>
     </div>
     <div class="q-pa-md row items-start q-gutter-md justify-center">
@@ -27,7 +27,7 @@
     </div>
     <div class="row justify-around full-width">
       <div class="row q-pa-lg" v-if="!loading">
-        <q-btn color="purple" label="carregar mais pokemóns" @click="morePokemons()"/>
+        <q-btn color="purple" label="load more pokemons" @click="morePokemons()"/>
       </div>
     </div>
   </q-page>
@@ -326,7 +326,7 @@ export default {
     showLoading () {
       this.loading = true
       this.$q.loading.show({
-        message: '<b>processando</b> dados dos pokemons.<br/><span class="text-primary">Aguarde...</span>'
+        message: '<b>Loading</b> pokemon data.<br/><span class="text-primary">wait ...</span>'
       })
       // hiding in 3s
       this.timer = setTimeout(() => {
