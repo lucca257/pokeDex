@@ -33,6 +33,12 @@
   </q-page>
   <q-page class="flex" v-else>
     <div class="row gutter items-center">
+      <div class="row justify-around full-width">
+        <div class="row q-pa-lg" v-if="!loading">
+          <q-input filled v-model="search" label="Find your pokemon" />
+          <q-btn color="purple" label="Search" @click="searchPokemon" />
+        </div>
+      </div>
       <div class="col-12 col-md-5 row flex-center">
         <q-icon
           name="far fa-arrow-alt-circle-left"
