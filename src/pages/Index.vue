@@ -38,11 +38,11 @@
           name="far fa-arrow-alt-circle-left"
           class="q-ml-sm cursor-pointer"
           size="50px"
-          @click="getPokemon(id - 1)"
+          @click="nextPokemon(details.id - 1)"
           v-bind:style="{color: details.types[0].color}"
         >
           <q-tooltip>
-            anterior
+            Previus
           </q-tooltip>
         </q-icon>
         <q-img :src="details.url2" width="100%" style="max-width: 280px;"/>
@@ -50,11 +50,11 @@
           name="far fa-arrow-alt-circle-right"
           class="q-ml-sm cursor-pointer"
           size="50px"
-          @click="getPokemon(id + 1)"
+          @click="nextPokemon(details.id + 1)"
           v-bind:style="{color: details.types[0].color}"
         >
           <q-tooltip>
-            próximo
+            Next
           </q-tooltip>
         </q-icon>
       </div>
@@ -252,7 +252,6 @@ export default {
             ...this.details,
             evolution: evolution
           }
-          console.log(this.details.evolution)
         })
         .catch(error => {
           console.error(error)
@@ -314,6 +313,16 @@ export default {
       this.pokemons = []
       await this.getPokemon(this.search)
     },
+    async nextPokemon(pokemon_id){
+      this.showLoading()
+      this.details = null
+      let pokemon = this.pokemons.find(pokemon => pokemon.id == pokemon_id)
+      if(typeof(pokemon) === "undefined"){
+        await this.getPokemon(pokemon_id)
+        pokemon = this.pokemons.find(pokemon => pokemon.id == pokemon_id)
+      }
+      await this.viewDetails(pokemon)
+    },
     showLoading () {
       this.loading = true
       this.$q.loading.show({
@@ -324,7 +333,7 @@ export default {
         this.$q.loading.hide()
         this.timer = void 0
         this.loading = false
-      }, 3000)
+      }, 2000)
     },
     triggerPositive () {
       this.$q.notify({
