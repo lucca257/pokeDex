@@ -8,7 +8,8 @@
     </div>
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card
-        v-bind:class="pokemons.length !== 1 ? 'col-11 col-md-2 my-card bg-grey-1' : 'col-11 col-md-4 my-card bg-grey-1'"
+        v-bind:class="pokemons.length !== 1 ? ' col-11 col-md-2 my-card text-white' : 'col-11 col-md-4 my-card text-white'"
+        v-bind:style="{background: pokemon.types[0].color}"
         v-for="(pokemon, pk) in pokemons"
         :key="pk"
         @click="viewDetails(pokemon)">
@@ -18,7 +19,7 @@
           <div class="text-h6">{{pokemon.name}}</div><br>
         </q-card-section>
         <q-card-actions align="around">
-          <q-btn v-for="(type,t) in pokemon.types" :key="t" flat v-bind:style="{color: type.color}" >
+          <q-btn v-for="(type,t) in pokemon.types" :key="t" flat color="white" >
             {{type.name}}
           </q-btn>
         </q-card-actions>
@@ -371,9 +372,15 @@ export default {
 
 <style lang="scss" scoped>
 .pokemon-id {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-size: 0.8em;
-  padding: 5px 10px;
+  margin-top: 10px;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 1.1rem;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff !important;
+}
+.pokemon-img-container {
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
 }
 </style>
