@@ -14,7 +14,7 @@
         :key="pk"
         @click="viewDetails(pokemon)">
         <q-card-section vertical align="center">
-          <q-img :src="pokemon.url" :ratio="1" width="180px"/>
+          <q-img :src="pokemon.url" :ratio="1" width="180px" class="pokemon-img-container"/>
           <div><span class="pokemon-id" style="color: #919191">Nº {{pokemon.id}}</span></div>
           <div class="text-h6">{{pokemon.name}}</div><br>
         </q-card-section>
@@ -33,27 +33,57 @@
   </q-page>
   <q-page class="flex" v-else>
     <div class="row gutter items-center">
-      <div class="col-12 col-md-2"></div>
-      <div class="col-12 col-md-4"><q-img :src="details.url2" width="350px"/></div>
-      <div class="col-12 col-md-6 flex-center">
-        <div class="text-h2">{{details.name}}</div>
-        <div class="">
+      <div class="col-12 col-md-5 row flex-center">
+        <q-icon
+          name="far fa-arrow-alt-circle-left"
+          color="purple"
+          class="q-ml-sm cursor-pointer"
+          size="50px"
+          @click="getPokemon(id - 1)"
+        >
+          <q-tooltip>
+            anterior
+          </q-tooltip>
+        </q-icon>
+        <q-img :src="details.url2" width="100%" style="max-width: 280px;"/>
+        <q-icon
+          name="far fa-arrow-alt-circle-right"
+          color="purple"
+          class="q-ml-sm cursor-pointer"
+          size="50px"
+          @click="getPokemon(id + 1)"
+        >
+          <q-tooltip>
+            próximo
+          </q-tooltip>
+        </q-icon>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="text-h2 text-center">{{details.name}}</div>
+        <div class="text-center">
           <q-btn v-for="(type,t) in details.types" :key="t" flat v-bind:style="{color: type.color}" >
             {{type.name}}
           </q-btn>
         </div>
-        <p>{{details.description}}</p>
-        <div class="q-mt-xs" style="width: 300px;" v-for="(stats, st) in details.stats" :key="st">
-          <strong>{{stats.stat.name}}</strong>
-          <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">
-            <div class="absolute-full flex">
-              <q-badge text-color="white" color="secondary" :label="stats.base_stat" />
-            </div>
-          </q-linear-progress>
+        <p class="text-center">{{details.description}}</p>
+        <div class="row flex-center">
+          <div class="q-pa-xs" style="width: 220px;" v-for="(stats, st) in details.stats" :key="st">
+            <strong>{{stats.stat.name}}</strong>
+            <q-linear-progress rounded size="20px" :value="stats.base_stat/170" :buffer="1" color="secondary" class="q-mt-sm">
+              <div class="absolute-full flex">
+                <q-badge text-color="white" color="secondary" :label="stats.base_stat" />
+              </div>
+            </q-linear-progress>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
-
+        <div class="text-h5">Habilities</div>
+        <ul>
+          <li v-for="(abilitie, a) in details.abilities" :key="a">
+            {{abilitie.ability.name}}
+          </li>
+        </ul>
       </div>
       <div class="col-12 col-md-6">
         <div class="text-h5">Evolutions</div>
@@ -325,7 +355,8 @@ export default {
   color: #fff !important;
 }
 .pokemon-img-container {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgb(255 255 255 / 42%);
   border-radius: 50%;
+  margin-bottom: 10px;
 }
 </style>
