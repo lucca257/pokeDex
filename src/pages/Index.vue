@@ -316,8 +316,13 @@ export default {
       await this.listPokemons()
     },
     async searchPokemon(){
-      this.pokemons = []
-      await this.getPokemon(this.search)
+      if(this.details !== null){
+        this.details = null
+        await this.nextPokemon(this.search)
+      } else {
+        this.pokemons = []
+        await this.getPokemon(this.search)
+      }
     },
     async nextPokemon(pokemon_id){
       this.showLoading()
