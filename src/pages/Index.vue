@@ -36,10 +36,10 @@
       <div class="col-12 col-md-5 row flex-center">
         <q-icon
           name="far fa-arrow-alt-circle-left"
-          color="purple"
           class="q-ml-sm cursor-pointer"
           size="50px"
           @click="getPokemon(id - 1)"
+          v-bind:style="{color: details.types[0].color}"
         >
           <q-tooltip>
             anterior
@@ -48,10 +48,10 @@
         <q-img :src="details.url2" width="100%" style="max-width: 280px;"/>
         <q-icon
           name="far fa-arrow-alt-circle-right"
-          color="purple"
           class="q-ml-sm cursor-pointer"
           size="50px"
           @click="getPokemon(id + 1)"
+          v-bind:style="{color: details.types[0].color}"
         >
           <q-tooltip>
             próximo
