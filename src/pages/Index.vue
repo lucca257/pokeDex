@@ -39,7 +39,7 @@
           <q-btn color="purple" label="Search" @click="searchPokemon" />
         </div>
       </div>
-      <div class="col-12 col-md-5 row flex-center">
+      <div class="col-12 col-md-6 row flex-center">
         <q-icon
           name="far fa-arrow-alt-circle-left"
           class="q-ml-sm cursor-pointer"
@@ -51,7 +51,7 @@
             Previus
           </q-tooltip>
         </q-icon>
-        <q-img :src="details.url2" class="pokemon-img" width="100%" style="max-width: 380px;"/>
+        <q-img :src="details.url2" class="pokemon-img" width="100%" style="max-width: 400px;"/>
         <q-icon
           name="far fa-arrow-alt-circle-right"
           class="q-ml-sm cursor-pointer"
