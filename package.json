@@ -6,11 +6,8 @@
   "author": "pedro <pedrolucca@gmail.com>",
   "private": true,
   "scripts": {
-    "deploy": "push-dir --dir=dist/spa --remote=gh-pages --branch=master",
-    "test": "echo \"No test specified\" && exit 0",
-    "build": "quasar build",
-    "start": "node index.js",
-    "heroku-postbuild": "yarn && yarn build"
+    "build": "yarn",
+    "start": "node index.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
