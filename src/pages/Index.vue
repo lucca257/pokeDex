@@ -100,6 +100,11 @@
         </div>
         <div class="col-12 col-md-4">
           <div class="text-h5">Weakness</div>
+          <div class="row">
+<!--            <q-btn v-for="(weakness, w) in details.weakness[0]" :key="w" flat>-->
+<!--              {{weakness.name}}-->
+<!--            </q-btn>-->
+          </div>
         </div>
         <div class="col-12 col-md-2">
           <div class="text-h5">Held items</div>
@@ -265,10 +270,9 @@ export default {
           const {evolution_chain, flavor_text_entries} = response.data
           const evolution = await this.evolutions(evolution_chain.url)
           const heldItems = await this.heldItems(pokemon.held_items)
-          const typeWeakness = []
-          pokemon.types.map(async type => {
-            typeWeakness.push(await this.typeWeakness(type.name))
-          })
+          const typeWeakness = await Promise.all(pokemon.types.map(async type => {
+            return await this.typeWeakness(type.name)
+          }))
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon,
@@ -276,12 +280,12 @@ export default {
             myItems: heldItems,
             weakness: typeWeakness
           }
-          console.log(this.details)
         })
         .catch(error => {
           console.error(error)
           this.triggerNegative ()
         })
+      //console.log(this.details)
     },
     async evolutions(evolution_url){
       return await axios.get(evolution_url)
@@ -324,14 +328,12 @@ export default {
         this.triggerNegative ()
       })
     },
-    typeWeakness(type){
-      return api.get(`/type/${type}`)
+    async typeWeakness(type){
+      return await api.get(`/type/${type}`)
         .then(response => {
-          const {double_damage_from, half_damage_from, no_damage_from} = response.data.damage_relations
+          const {double_damage_from} = response.data.damage_relations
           return {
-            double_damage: double_damage_from,
-            half_damage: half_damage_from,
-            no_damage: no_damage_from
+            double_damage_from
           }
         })
         .catch(error => {
@@ -364,7 +366,7 @@ export default {
         this.pokemons.push(info)
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         this.triggerNegative ()
       })
       this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
