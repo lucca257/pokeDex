@@ -51,7 +51,7 @@
             Previus
           </q-tooltip>
         </q-icon>
-        <q-img :src="details.url2" class="pokemon-img" width="100%" style="max-width: 400px;"/>
+        <q-img :src="details.url2" class="pokemon-img" width="100%" style="max-width: 380px;"/>
         <q-icon
           name="far fa-arrow-alt-circle-right"
           class="q-ml-sm cursor-pointer"
@@ -84,8 +84,7 @@
         </div>
       </div>
       <div class="row col-12">
-        <div class="col-1"></div>
-        <div class="col-12 col-md-5">
+        <div class="col-12 col-md-2">
           <div class="text-h5">Abilities</div>
           <q-btn
             v-for="(abilitie, a) in details.abilities" :key="a" flat
@@ -93,10 +92,25 @@
             <span>{{abilitie.ability.name}}</span>
           </q-btn>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
           <div class="text-h5">Family</div>
           <div class="row">
             <q-img :src="evolution.url" :ratio="1" width="100px" v-for="(evolution, e) in details.evolution" :key="e"/>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="text-h5">Weakness</div>
+        </div>
+        <div class="col-12 col-md-2">
+          <div class="text-h5">Held items</div>
+          <div class="row">
+            <q-btn v-for="(heldItem, e) in details.myItems" flat>
+            <q-img :src="heldItem.url" :alt="heldItem.name" :ratio="1" width="25px"/>
+              {{heldItem.name}}
+              <q-tooltip>
+                {{heldItem.description}}
+              </q-tooltip>
+            </q-btn>
           </div>
         </div>
       </div>
@@ -222,15 +236,42 @@ export default {
       const {url} = this.pokemons.find(pokemon => pokemon.name === name)
       return url
     },
+    async heldItems(held_items){
+      const items = []
+      held_items.map(async (info) => {
+        const itemInfo = await this.heldItemsInfo(info.item.name)
+        items.push(itemInfo)
+      })
+      return items
+    },
+    async heldItemsInfo(item){
+      return await api.get(`/item/${item}`)
+      .then(response => {
+        const {sprites, effect_entries} = response.data
+        return {
+          name: item,
+          url: sprites.default,
+          description: effect_entries[0].short_effect
+        }
+      })
+      .catch(error => {
+        console.error(error)
+        this.triggerNegative ()
+      })
+    },
     async viewDetails (pokemon) {
       await api.get(`/pokemon-species/${pokemon.id}`)
         .then(async (response)=> {
           const {evolution_chain, flavor_text_entries} = response.data
+          const evolution = await this.evolutions(evolution_chain.url)
+          const heldItems = await this.heldItems(pokemon.held_items)
           this.details = {
             description: flavor_text_entries[0].flavor_text,
-            ...pokemon
+            ...pokemon,
+            evolution: evolution,
+            myItems: heldItems
           }
-          await this.evolutions(evolution_chain.url)
+          console.log(this.details)
         })
         .catch(error => {
           console.error(error)
@@ -238,7 +279,7 @@ export default {
         })
     },
     async evolutions(evolution_url){
-      await axios.get(evolution_url)
+      return await axios.get(evolution_url)
         .then(async response => {
           const {species, evolves_to} = response.data.chain
           const evolution = [
@@ -257,10 +298,7 @@ export default {
               url: await this.pokemonUrl(evolves_to[0].evolves_to[0].species.name),
             })
           }
-          this.details = {
-            ...this.details,
-            evolution: evolution
-          }
+          return evolution
         })
         .catch(error => {
           console.error(error)
@@ -284,7 +322,7 @@ export default {
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
       .then(response => {
-        const {name, sprites, id, types, height, weight, abilities, stats} = response.data
+        const {name, sprites, id, types, height, weight, abilities, stats, held_items} = response.data
         const info = {
           name: name,
           id: id,
@@ -294,6 +332,7 @@ export default {
           weight: weight,
           abilities: abilities,
           stats: stats,
+          held_items: held_items,
           types: types.map(type => {
             const info = this.typesInfo.find(t => t.type === type.type.name)
             return {
