@@ -6,8 +6,9 @@
   "author": "pedro <pedrolucca@gmail.com>",
   "private": true,
   "scripts": {
-    "build": "yarn",
-    "start": "node index.js"
+    "build": "quasar build",
+    "start": "node front-end-server.js",
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
