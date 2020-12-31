@@ -6,7 +6,7 @@
   "author": "pedro <pedrolucca@gmail.com>",
   "private": true,
   "scripts": {
-    "build": "quasar build",
+    "build": "quasar dev",
     "start": "node front-end-server.js",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
