@@ -86,7 +86,7 @@
       <div class="row col-12">
         <div class="col-1"></div>
         <div class="col-12 col-md-5">
-          <div class="text-h5">Habilities</div>
+          <div class="text-h5">Abilities</div>
           <q-btn
             v-for="(abilitie, a) in details.abilities" :key="a" flat
             v-bind:style="{color: details.types[0].color}">
@@ -94,7 +94,7 @@
           </q-btn>
         </div>
         <div class="col-12 col-md-6">
-          <div class="text-h5">Evolutions</div>
+          <div class="text-h5">Family</div>
           <div class="row">
             <q-img :src="evolution.url" :ratio="1" width="100px" v-for="(evolution, e) in details.evolution" :key="e"/>
           </div>
