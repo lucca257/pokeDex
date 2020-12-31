@@ -104,7 +104,7 @@
         <div class="col-12 col-md-2">
           <div class="text-h5">Held items</div>
           <div class="row">
-            <q-btn v-for="(heldItem, e) in details.myItems" flat>
+            <q-btn v-for="(heldItem, h) in details.myItems" :key="h" flat>
             <q-img :src="heldItem.url" :alt="heldItem.name" :ratio="1" width="25px"/>
               {{heldItem.name}}
               <q-tooltip>
@@ -265,11 +265,16 @@ export default {
           const {evolution_chain, flavor_text_entries} = response.data
           const evolution = await this.evolutions(evolution_chain.url)
           const heldItems = await this.heldItems(pokemon.held_items)
+          const typeWeakness = []
+          pokemon.types.map(async type => {
+            typeWeakness.push(await this.typeWeakness(type.name))
+          })
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon,
             evolution: evolution,
-            myItems: heldItems
+            myItems: heldItems,
+            weakness: typeWeakness
           }
           console.log(this.details)
         })
@@ -318,6 +323,21 @@ export default {
         console.error(error)
         this.triggerNegative ()
       })
+    },
+    typeWeakness(type){
+      return api.get(`/type/${type}`)
+        .then(response => {
+          const {double_damage_from, half_damage_from, no_damage_from} = response.data.damage_relations
+          return {
+            double_damage: double_damage_from,
+            half_damage: half_damage_from,
+            no_damage: no_damage_from
+          }
+        })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
     },
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
