@@ -51,7 +51,7 @@
             Previus
           </q-tooltip>
         </q-icon>
-        <q-img :src="details.url2" width="100%" style="max-width: 280px;"/>
+        <q-img :src="details.url2" class="pokemon-img" width="100%" style="max-width: 400px;"/>
         <q-icon
           name="far fa-arrow-alt-circle-right"
           class="q-ml-sm cursor-pointer"
@@ -381,5 +381,16 @@ export default {
   background-color: rgb(255 255 255 / 42%);
   border-radius: 50%;
   margin-bottom: 10px;
+}
+.pokemon-img {
+  @media (min-width: 481px) and (max-width: 767px) {
+    width: 350px!important;
+  }
+  @media (min-width: 361px) and (max-width: 480px) {
+    width: 240px!important;
+  }
+  @media (min-width: 320px) and (max-width: 360px) {
+    width: 180px!important;
+  }
 }
 </style>
