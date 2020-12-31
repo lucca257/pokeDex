@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build": "quasar build",
-    "start": "node front-end-server.js",
+    "start": "node server.js",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
