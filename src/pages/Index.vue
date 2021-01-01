@@ -114,6 +114,7 @@
         <div class="col-12 col-md-2">
           <div class="text-h5">Held items</div>
           <div class="row">
+            <q-btn flat color="secondary" v-if="details.myItems.length === 0">NONE</q-btn>
             <q-btn v-for="(heldItem, h) in details.myItems" :key="h" flat>
             <q-img :src="heldItem.url" :alt="heldItem.name" :ratio="1" width="25px"/>
               {{heldItem.name}}
