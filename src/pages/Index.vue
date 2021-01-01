@@ -103,7 +103,9 @@
           <div class="text-h5">Weakness</div>
           <div class="row">
             <q-btn
-              v-for="(weakness, w) in details.weakness" :key="w" flat>
+              v-for="(weakness, w) in details.weakness" :key="w" flat
+              v-bind:style="{color: typeColor(weakness.name)}"
+            >
               {{weakness.name}}
             </q-btn>
           </div>
