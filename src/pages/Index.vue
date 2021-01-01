@@ -84,6 +84,7 @@
         </div>
       </div>
       <div class="row col-12">
+        <div class="col-12 col-md-1"></div>
         <div class="col-12 col-md-2">
           <div class="text-h5">Abilities</div>
           <q-btn
@@ -98,14 +99,16 @@
             <q-img :src="evolution.url" :ratio="1" width="100px" v-for="(evolution, e) in details.evolution" :key="e"/>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-2">
           <div class="text-h5">Weakness</div>
           <div class="row">
-<!--            <q-btn v-for="(weakness, w) in details.weakness[0]" :key="w" flat>-->
-<!--              {{weakness.name}}-->
-<!--            </q-btn>-->
+            <q-btn
+              v-for="(weakness, w) in details.weakness" :key="w" flat>
+              {{weakness.name}}
+            </q-btn>
           </div>
         </div>
+        <div class="col-12 col-md-1"></div>
         <div class="col-12 col-md-2">
           <div class="text-h5">Held items</div>
           <div class="row">
@@ -273,12 +276,16 @@ export default {
           const typeWeakness = await Promise.all(pokemon.types.map(async type => {
             return await this.typeWeakness(type.name)
           }))
+          const weakness = []
+          for (let i = 0; i < typeWeakness.length; i++) {
+            weakness.push(...typeWeakness[i].double_damage_from)
+          }
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon,
             evolution: evolution,
             myItems: heldItems,
-            weakness: typeWeakness
+            weakness: weakness
           }
         })
         .catch(error => {
