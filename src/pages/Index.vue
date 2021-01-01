@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="row col-12">
+      <div class="row col-12 q-pa-lg">
         <div class="col-12 col-md-1"></div>
         <div class="col-12 col-md-2">
           <div class="text-h5">Abilities</div>
