@@ -294,6 +294,10 @@ export default {
         })
       //console.log(this.details)
     },
+    typeColor(typeName){
+      const {color} = this.typesInfo.find(t => t.type === typeName)
+      return color
+    },
     async evolutions(evolution_url){
       return await axios.get(evolution_url)
         .then(async response => {
@@ -363,10 +367,9 @@ export default {
           stats: stats,
           held_items: held_items,
           types: types.map(type => {
-            const info = this.typesInfo.find(t => t.type === type.type.name)
             return {
               name: type.type.name,
-              color: info.color
+              color: this.typeColor(type.type.name)
             }
           })
         }
