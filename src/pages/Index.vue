@@ -310,15 +310,19 @@ export default {
               name: species.name,
               url: await this.pokemonUrl(species.name),
             },
-            {
-              name: evolves_to[0].species.name,
-              url: await this.pokemonUrl(evolves_to[0].species.name),
-            },
           ]
-          if(typeof(evolves_to[0].evolves_to[0]) !== 'undefined'){
-            evolution.push({
-              name: evolves_to[0].evolves_to[0].species.name,
-              url: await this.pokemonUrl(evolves_to[0].evolves_to[0].species.name),
+          if(evolves_to.length !== 0) {
+            evolves_to.map(async e => {
+              evolution.push({
+                name: e.species.name,
+                url: await this.pokemonUrl(e.species.name),
+              })
+              if(e.evolves_to.length !== 0){
+                  evolution.push({
+                    name: e.evolves_to[0].species.name,
+                    url: await this.pokemonUrl(e.evolves_to[0].species.name),
+                  })
+              }
             })
           }
           return evolution
