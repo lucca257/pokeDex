@@ -397,12 +397,13 @@ export default {
       await this.listPokemons()
     },
     async searchPokemon(){
+      this.pokemons = []
+      const search = this.search.toLowerCase()
       if(this.details !== null){
         this.details = null
-        await this.nextPokemon(this.search)
+        await this.nextPokemon(search)
       } else {
-        this.pokemons = []
-        await this.getPokemon(this.search)
+        await this.getPokemon(search)
       }
     },
     async nextPokemon(pokemon_id){
