@@ -1,9 +1,9 @@
 {
   "name": "poke-dex",
-  "version": "0.0.1",
+  "version": "2.2.2",
   "description": "Pokedex",
   "productName": "Pokedex",
-  "author": "pedro <pedrolucca@gmail.com>",
+  "author": "lucca257 <pedroluca257@gmail.com>",
   "private": true,
   "scripts": {
     "build": "quasar build",
