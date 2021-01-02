@@ -2,6 +2,8 @@
 
 List of all pokemons, using vuejs and framework quasar
 
+example projec site https://pokedex-quasar.herokuapp.com/
+
 ## Install the dependencies
 ```bash
 yarn
