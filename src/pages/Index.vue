@@ -1,11 +1,13 @@
 <template>
   <q-page v-if="!details">
-    <div class="row justify-around full-width">
-      <div class="row q-pa-lg" v-if="!loading">
-        <q-input filled v-model="search" label="Find your pokemon" />
-        <q-btn color="purple" label="Search" @click="searchPokemon" />
+    <form @submit.prevent="submit">
+      <div class="row justify-around full-width">
+        <div class="row q-pa-lg" v-if="!loading">
+          <q-input filled v-model="search" label="Find your pokemon" />
+          <q-btn type="submit" color="purple" label="Search" @click="searchPokemon" />
+        </div>
       </div>
-    </div>
+    </form>
     <div class="q-pa-md row items-start q-gutter-md justify-center">
       <q-card
         v-bind:class="pokemons.length !== 1 ? ' col-11 col-md-2 my-card text-white' : 'col-11 col-md-4 my-card text-white'"
@@ -32,13 +34,15 @@
     </div>
   </q-page>
   <q-page class="flex" v-else>
-    <div class="row gutter items-center">
-      <div class="row justify-around full-width">
+    <div class="row justify-around full-width ">
+      <form @submit.prevent="submit">
         <div class="row q-pa-lg" v-if="!loading">
           <q-input filled v-model="search" label="Find your pokemon" />
-          <q-btn color="purple" label="Search" @click="searchPokemon" />
+          <q-btn type="submit" color="purple" label="Search" @click="searchPokemon" />
         </div>
-      </div>
+      </form>
+    </div>
+    <div class="row gutter items-center">
       <div class="col-12 col-md-6 row flex-center">
         <q-icon
           name="far fa-arrow-alt-circle-left"
@@ -115,7 +119,7 @@
           <div class="row">
             <q-btn flat color="secondary" v-if="details.myItems.length === 0">NONE</q-btn>
             <q-btn v-for="(heldItem, h) in details.myItems" :key="h" flat>
-            <q-img :src="heldItem.url" :alt="heldItem.name" :ratio="1" width="25px"/>
+              <q-img :src="heldItem.url" :alt="heldItem.name" :ratio="1" width="25px"/>
               {{heldItem.name}}
               <q-tooltip>
                 {{heldItem.description}}
@@ -256,18 +260,18 @@ export default {
     },
     async heldItemsInfo(item){
       return await api.get(`/item/${item}`)
-      .then(response => {
-        const {sprites, effect_entries} = response.data
-        return {
-          name: item,
-          url: sprites.default,
-          description: effect_entries[0].short_effect
-        }
-      })
-      .catch(error => {
-        console.error(error)
-        this.triggerNegative ()
-      })
+        .then(response => {
+          const {sprites, effect_entries} = response.data
+          return {
+            name: item,
+            url: sprites.default,
+            description: effect_entries[0].short_effect
+          }
+        })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
     },
     async viewDetails (pokemon) {
       await api.get(`/pokemon-species/${pokemon.id}`)
@@ -282,7 +286,7 @@ export default {
           for (let i = 0; i < typeWeakness.length; i++) {
             weakness.push(...typeWeakness[i].double_damage_from)
           }
-         weakness = [...new Map(weakness.map(item => [item['name'], item])).values()]
+          weakness = [...new Map(weakness.map(item => [item['name'], item])).values()]
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon,
@@ -318,10 +322,10 @@ export default {
                 url: await this.pokemonUrl(e.species.name),
               })
               if(e.evolves_to.length !== 0){
-                  evolution.push({
-                    name: e.evolves_to[0].species.name,
-                    url: await this.pokemonUrl(e.evolves_to[0].species.name),
-                  })
+                evolution.push({
+                  name: e.evolves_to[0].species.name,
+                  url: await this.pokemonUrl(e.evolves_to[0].species.name),
+                })
               }
             })
           }
@@ -335,16 +339,16 @@ export default {
     async listPokemons(){
       this.showLoading()
       await api.get(`/pokemon?offset=${this.offset}&limit=${this.limit}`)
-      .then(response => {
-        const pokemons = response.data.results
-        pokemons.map(async (pokemon) => {
-          await this.getPokemon(pokemon.name)
+        .then(response => {
+          const pokemons = response.data.results
+          pokemons.map(async (pokemon) => {
+            await this.getPokemon(pokemon.name)
+          })
         })
-      })
-      .catch(error => {
-        console.error(error)
-        this.triggerNegative ()
-      })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
     },
     async typeWeakness(type){
       return await api.get(`/type/${type}`)
@@ -361,31 +365,31 @@ export default {
     },
     async getPokemon(search){
       await api.get(`/pokemon/${search}`)
-      .then(response => {
-        const {name, sprites, id, types, height, weight, abilities, stats, held_items} = response.data
-        const info = {
-          name: name,
-          id: id,
-          url: sprites.front_default,
-          url2: sprites.other.dream_world.front_default,
-          height: height,
-          weight: weight,
-          abilities: abilities,
-          stats: stats,
-          held_items: held_items,
-          types: types.map(type => {
-            return {
-              name: type.type.name,
-              color: this.typeColor(type.type.name)
-            }
-          })
-        }
-        this.pokemons.push(info)
-      })
-      .catch(error => {
-        console.error(error)
-        this.triggerNegative ()
-      })
+        .then(response => {
+          const {name, sprites, id, types, height, weight, abilities, stats, held_items} = response.data
+          const info = {
+            name: name,
+            id: id,
+            url: sprites.front_default,
+            url2: sprites.other.dream_world.front_default,
+            height: height,
+            weight: weight,
+            abilities: abilities,
+            stats: stats,
+            held_items: held_items,
+            types: types.map(type => {
+              return {
+                name: type.type.name,
+                color: this.typeColor(type.type.name)
+              }
+            })
+          }
+          this.pokemons.push(info)
+        })
+        .catch(error => {
+          console.error(error)
+          this.triggerNegative ()
+        })
       this.pokemons.sort((a, b) => (a.id > b.id) ? 1 : -1)
     },
     async morePokemons(){
