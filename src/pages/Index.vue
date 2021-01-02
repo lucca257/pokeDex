@@ -1,6 +1,6 @@
 <template>
   <q-page v-if="!details">
-    <form @submit.prevent="submit">
+    <form @submit.prevent="">
       <div class="row justify-around full-width">
         <div class="row q-pa-lg" v-if="!loading">
           <q-input filled v-model="search" label="Find your pokemon" />
@@ -29,13 +29,13 @@
     </div>
     <div class="row justify-around full-width">
       <div class="row q-pa-lg" v-if="!loading">
-        <q-btn color="purple" label="load more pokemons" @click="morePokemons()"/>
+        <q-btn  color="purple" label="load more pokemons" @click="morePokemons()"/>
       </div>
     </div>
   </q-page>
   <q-page class="flex" v-else>
     <div class="row justify-around full-width ">
-      <form @submit.prevent="submit">
+      <form @submit.prevent="">
         <div class="row q-pa-lg" v-if="!loading">
           <q-input filled v-model="search" label="Find your pokemon" />
           <q-btn type="submit" color="purple" label="Search" @click="searchPokemon" />
@@ -145,89 +145,30 @@ export default {
       id: null,
       search: '',
       pokemons: [],
-      typesInfo: [
-        {
-          type: 'grass',
-          color: '#78c850'
-        },
-        {
-          type: 'fire',
-          color: '#f08030'
-        },
-        {
-          type: 'water',
-          color: '#6890f0'
-        },
-        {
-          type: 'bug',
-          color: '#b9c64d'
-        },
-        {
-          type: 'normal',
-          color: '#b9b993'
-        },
-        {
-          type: 'poison',
-          color: '#a040a0'
-        },
-        {
-          type: 'flying',
-          color: '#b9a6f3'
-        },
-        {
-          type: 'electric',
-          color: '#f9d959'
-        },
-        {
-          type: 'ground',
-          color: '#e6cd86'
-        },
-        {
-          type: 'eletric',
-          color: '#f9d959'
-        },
-        {
-          type: 'fairy',
-          color: '#f1adbd'
-        },
-        {
-          type: 'fighting',
-          color: '#cd4d60'
-        },
-        {
-          type: 'psychic',
-          color: '#f979a0'
-        },
-        {
-          type: 'rock',
-          color: '#c6b360'
-        },
-        {
-          type: 'steel',
-          color: '#c6c6d9'
-        },
-        {
-          type: 'ice',
-          color: '#ade0e0'
-        },
-        {
-          type: 'ghost',
-          color: '#8d79ad'
-        },
-        {
-          type: 'dark',
-          color: '#705848'
-        },
-        {
-          type: 'dragon',
-          color: '#7038f8'
-        },
-      ],
       offset:0,
       limit:20,
       loading: false,
       details: null,
-      tab: 'description'
+      colors: {
+        grass: "#78c850",
+        poison: "#a040a0",
+        fire: "#f08030",
+        flying: "#b9a6f3",
+        water: "#6890f0",
+        bug: "#b9c64d",
+        normal: "#b9b993",
+        electric: "#f9d959",
+        ground: "#e6cd86",
+        fighting: "#cd4d60",
+        psychic: "#f979a0",
+        rock: "#c6b360",
+        fairy: "#f1adbd",
+        steel: "#c6c6d9",
+        ice: "#ade0e0",
+        ghost: "#8d79ad",
+        dark: "#705848",
+        dragon: "#7038f8"
+      }
     }
   },
 
@@ -302,8 +243,7 @@ export default {
       //console.log(this.details)
     },
     typeColor(typeName){
-      const {color} = this.typesInfo.find(t => t.type === typeName)
-      return color
+      return this.colors[typeName]
     },
     async evolutions(evolution_url){
       return await axios.get(evolution_url)
