@@ -84,8 +84,7 @@
         </div>
       </div>
       <div class="row col-12 q-pa-lg">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
           <div class="text-h5">Abilities</div>
           <q-btn
             v-for="(abilitie, a) in details.abilities" :key="a" flat
@@ -279,10 +278,11 @@ export default {
           const typeWeakness = await Promise.all(pokemon.types.map(async type => {
             return await this.typeWeakness(type.name)
           }))
-          const weakness = []
+          let weakness = []
           for (let i = 0; i < typeWeakness.length; i++) {
             weakness.push(...typeWeakness[i].double_damage_from)
           }
+         weakness = [...new Map(weakness.map(item => [item['name'], item])).values()]
           this.details = {
             description: flavor_text_entries[0].flavor_text,
             ...pokemon,
